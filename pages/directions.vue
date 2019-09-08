@@ -40,7 +40,6 @@ export default {
   mounted() {
     const lat = this.$route.query.lat
     const lng = this.$route.query.lng
-    console.log({ lat, lng })
 
     mapboxgl.accessToken =
       'pk.eyJ1IjoiYXJhcGwzeSIsImEiOiJjazA4eThjdnkwMzNuM21wYm5rbnhoNTZoIn0.4-8tR6ZMNfGDyoQhjKwHpQ'
