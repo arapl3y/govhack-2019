@@ -41,8 +41,9 @@ export default {
 }
 */
 .container {
-  margin: 0 auto;
+  @apply bg-primary text-white w-full h-full m-0 p-0;
   min-height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,12 +51,9 @@ export default {
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
-  font-weight: 300;
+  font-weight: 900;
   font-size: 100px;
-  color: #35495e;
   letter-spacing: 1px;
 }
 
