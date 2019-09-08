@@ -25,6 +25,25 @@
         <span>{{ duration }} mins</span>
       </span>
     </div>
+    <div
+      class="absolute bottom-0 w-full justify-center items-center flex flex-row"
+    >
+      <button
+        v-if="!showControls"
+        class="w-1/2 p-4 rounded rounded-l-none bg-primary mb-12 text-white font-black shadow-2xl"
+        @click="showControls = true"
+      >
+        Plan your route
+      </button>
+
+      <button
+        v-if="showCompleted"
+        class="w-1/2 p-4 rounded rounded-l-none bg-primary mb-12 text-white font-black shadow-2xl"
+        @click="$router.push('/summary')"
+      >
+        View summary
+      </button>
+    </div>
   </div>
 </template>
 
@@ -38,11 +57,24 @@ export default {
     draw: null,
     map: null,
     showHeader: false,
+    showCompleted: false,
+    showControls: false,
     localTemp: null,
     distance: null,
     duration: null,
-    carbonSaved: null
+    carbonSaved: null,
+    geolocation: null,
+    navigationControl: null
   }),
+  watch: {
+    showControls(val) {
+      if (val) {
+        this.map.addControl(this.draw, 'bottom-right')
+        this.map.addControl(this.geolocation, 'bottom-right')
+        this.map.addControl(this.navigationControl, 'bottom-right')
+      }
+    }
+  },
   mounted() {
     const lat = this.$route.query.lat
     const lng = this.$route.query.lng
@@ -118,14 +150,14 @@ export default {
       ]
     })
 
-    const geolocation = new mapboxgl.GeolocateControl({
+    this.geolocation = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
       },
       trackUserLocation: true
     })
 
-    const navigationControl = new mapboxgl.NavigationControl()
+    this.navigationControl = new mapboxgl.NavigationControl()
 
     // geolocation.on('geolocate', async (e) => {
     //   const lon = e.coords.longitude
@@ -144,9 +176,6 @@ export default {
     //   }
     // })
 
-    this.map.addControl(this.draw, 'bottom-right')
-    this.map.addControl(geolocation, 'bottom-right')
-    this.map.addControl(navigationControl, 'bottom-right')
     // this.map.addControl(directions, 'top-left')
 
     this.map.on('draw.create', this.updateRoute)
@@ -161,7 +190,7 @@ export default {
         )
         const data = await req.json()
 
-        this.localTemp = data.main.temp
+        this.localTemp = data.main.temp.toFixed(1)
       } catch (err) {
         throw new Error(err)
       }
@@ -242,6 +271,8 @@ export default {
         this.localTemp = null
         this.distance = null
         this.duration = null
+
+        this.showCompleted = true
       } else {
       }
     }
