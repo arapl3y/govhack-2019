@@ -14,9 +14,6 @@
 export default {}
 </script>
 
-<<<<<<< HEAD
-<style></style>
-=======
 <style>
 /* Sample `apply` at-rules with Tailwind CSS
 .container {
@@ -52,4 +49,3 @@ export default {}
   padding-top: 15px;
 }
 </style>
->>>>>>> 4a4cc6f6569bd110a90e6ef592ee29deb0256660
