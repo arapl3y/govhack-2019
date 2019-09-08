@@ -6,9 +6,15 @@
  */
 module.exports = {
   theme: {
-    colors: {
-      green: '#5ec463',
-      white: '#ffffff'
+    fontFamily: {
+      display: ['Poppins', 'sans-serif'],
+      body: ['Poppins', 'sans-serif']
+    },
+    extend: {
+      colors: {
+        primary: '#08A563', // green
+        secondary: '#E7B158' // orange
+      }
     }
   },
   variants: {},

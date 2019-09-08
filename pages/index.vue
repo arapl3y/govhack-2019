@@ -1,10 +1,10 @@
 <template>
   <div
-    class="bg-primary text-white text-3xl min-h-screen flex justify-center items-center m-0 py-20 px-"
+    class="bg-primary text-white text-3xl min-h-screen flex justify-center items-center m-0 py-20 px-6"
   >
     <div class="mx-auto max-w-2xl px-6">
       <div
-        class="flex align-middle content-middle items-middle logo opacity-50 font-black leading-none pb-4"
+        class="flex align-middle content-middle items-middle logo text-green-300 font-black leading-none pb-4"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,10 +22,11 @@
       <h1 class="block font-black leading-tight text-6xl pb-16">
         Where would you like to explore?
       </h1>
-      <form>
+      <form @submit.prevent="handleForm">
         <label for="start" class="block pb-4">Starting point</label>
         <input
           id="start"
+          v-model="address"
           type="text"
           name="start"
           class="rounded rounded-r-none py-4 px-8 w-9/12 text-gray-800"
@@ -47,6 +48,49 @@
 export default {
   components: {
     // Logo
+  },
+  data() {
+    return {
+      address: ''
+    }
+  },
+  methods: {
+    async handleForm() {
+      let coords = []
+
+      if (this.address.length > 0) {
+        const accessToken =
+          'pk.eyJ1IjoiYXJhcGwzeSIsImEiOiJjazA4eThjdnkwMzNuM21wYm5rbnhoNTZoIn0.4-8tR6ZMNfGDyoQhjKwHpQ'
+
+        const url =
+          'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+          encodeURIComponent(this.address) +
+          '.json?access_token=' +
+          accessToken
+
+        const response = await fetch(url)
+        const data = await response.json()
+
+        if (
+          !data ||
+          !data.features ||
+          !data.features[0] ||
+          !data.features[0].center
+        ) {
+          alert('Could not find the selected location')
+        }
+
+        coords = data.features[0].center
+      }
+
+      this.$router.push({
+        path: '/directions',
+        params: {
+          address: this.address,
+          coords
+        }
+      })
+    }
   }
 }
 </script>
