@@ -2,7 +2,7 @@
   <div
     class="bg-primary text-white text-xl min-h-screen flex justify-center items-center m-0 py-16 px-6"
   >
-    <div class="mx-auto max-w-2xl">
+    <div class="mx-auto w-full max-w-2xl">
       <div
         class="flex align-middle content-middle items-middle logo text-green-300 font-black leading-none pb-4"
       >
