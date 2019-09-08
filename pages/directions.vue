@@ -4,20 +4,26 @@
 
     <div
       v-if="showHeader"
-      class="h-28 w-full absolute top-0 left-0 info-box flex flex-row font-body"
+      class="h-28 w-full absolute top-0 left-0 info-box flex flex-row font-body shadow-xl"
     >
       <span
-        class="bg-primary w-1/3 flex items-center justify-center py-8 text-white"
+        class="bg-primary w-1/3 flex flex-col items-center justify-center py-4 text-white"
       >
-        {{ localTemp }} &deg;C
+        <img src="/thermometer.svg" />
+        <span>{{ localTemp }} &deg;C</span>
       </span>
-
-      <span class="bg-gray-400 w-1/3 flex items-center justify-center py-8"
-        >{{ distance }}km</span
+      <span
+        class="bg-gray-400 w-1/3 flex flex-col items-center justify-center py-4"
       >
-      <span class="bg-gray-300 w-1/3 flex items-center justify-center py-8"
-        >{{ duration }} minutes</span
+        <img src="/walking.svg" />
+        <span>{{ distance }}km</span>
+      </span>
+      <span
+        class="bg-gray-300 w-1/3 flex flex-col items-center justify-center py-4"
       >
+        <img src="/stopwatch.svg" />
+        <span>{{ duration }} mins</span>
+      </span>
     </div>
   </div>
 </template>
@@ -189,7 +195,7 @@ export default {
         const duration = data.routes[0].duration / 60 // convert to minutes
 
         this.distance = distance.toFixed(2)
-        this.duration = duration.toFixed(2)
+        this.duration = Math.round(duration)
         this.carbonSaved = (distance * 180).toFixed(2)
 
         const coords = data.routes[0].geometry
