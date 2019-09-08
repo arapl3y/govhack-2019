@@ -1,15 +1,21 @@
 <template>
   <div>
     <div id="mapbox" />
-    <div class="info-box flex flex-row">
-      <span class="w-1/3 flex items-center justify-center">
+
+    <div
+      v-if="showHeader"
+      class="h-28 w-full absolute top-0 left-0 info-box flex flex-row font-body"
+    >
+      <span
+        class="bg-primary w-1/3 flex items-center justify-center py-8 text-white"
+      >
         {{ localTemp }} &deg;C
       </span>
 
-      <span class="w-1/3 flex items-center justify-center"
+      <span class="bg-gray-400 w-1/3 flex items-center justify-center py-8"
         >{{ distance }}km</span
       >
-      <span class="w-1/3 flex items-center justify-center"
+      <span class="bg-gray-300 w-1/3 flex items-center justify-center py-8"
         >{{ duration }} minutes</span
       >
     </div>
@@ -28,7 +34,8 @@ export default {
     showHeader: false,
     localTemp: null,
     distance: null,
-    duration: null
+    duration: null,
+    carbonSaved: null
   }),
   mounted() {
     mapboxgl.accessToken =
@@ -158,7 +165,9 @@ export default {
       const newCoords = coords.join(';')
       this.showHeader = true
 
-      this.getLocalTemperature(newCoords[0], newCoords[1])
+      const [lon, lat] = coords[0]
+
+      this.getLocalTemperature(lat, lon)
 
       this.getMatch(newCoords)
     },
@@ -235,19 +244,5 @@ export default {
 #mapbox {
   width: 100vw;
   height: 100vh;
-}
-
-.info-box {
-  height: 6rem;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
-  text-align: left;
-  font-family: 'Arial';
-  margin: 0;
-  font-size: 1rem;
 }
 </style>
