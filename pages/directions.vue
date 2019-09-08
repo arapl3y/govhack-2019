@@ -33,7 +33,7 @@
       <button
         v-if="showCompleted"
         class="w-1/2 p-4 rounded rounded-l-none bg-primary mb-12 text-white font-black shadow-2xl"
-        @click="this.$router.push('/summary')"
+        @click="$router.push('/summary')"
       >
         View summary
       </button>
