@@ -38,13 +38,17 @@ export default {
     carbonSaved: null
   }),
   mounted() {
+    const lat = this.$route.query.lat
+    const lng = this.$route.query.lng
+    console.log({ lat, lng })
+
     mapboxgl.accessToken =
       'pk.eyJ1IjoiYXJhcGwzeSIsImEiOiJjazA4eThjdnkwMzNuM21wYm5rbnhoNTZoIn0.4-8tR6ZMNfGDyoQhjKwHpQ'
 
     this.map = new mapboxgl.Map({
       container: 'mapbox',
       style: 'mapbox://styles/arapl3y/ck0a824j32m8j1cmwf3pgaqv8', // style URL
-      center: [151.20075, -33.88137], // starting position as [lng, lat]
+      center: [lng || 151.20075, lat || -33.88137], // starting position as [lng, lat]
       zoom: 14,
       minZoom: 11
     })

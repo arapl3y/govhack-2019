@@ -56,7 +56,8 @@ export default {
   },
   methods: {
     async handleForm() {
-      let coords = []
+      let lat
+      let lng
 
       if (this.address.length > 0) {
         const accessToken =
@@ -80,14 +81,19 @@ export default {
           alert('Could not find the selected location')
         }
 
-        coords = data.features[0].center
+        const coords = data.features[0].center
+
+        if (coords.length >= 2) {
+          lng = coords[0]
+          lat = coords[1]
+        }
       }
 
       this.$router.push({
-        path: '/directions',
-        params: {
-          address: this.address,
-          coords
+        name: 'directions',
+        query: {
+          lat,
+          lng
         }
       })
     }
