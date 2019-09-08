@@ -1,71 +1,59 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        govhack-2019
-      </h1>
-      <h2 class="subtitle">
-        My primo Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
+  <div
+    class="bg-primary text-white text-3xl min-h-screen flex justify-center items-center m-0 py-20 px-"
+  >
+    <div class="mx-auto max-w-2xl px-6">
+      <div
+        class="flex align-middle content-middle items-middle logo opacity-50 font-black leading-none pb-4"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="inline-block w-8 h-8 mr-3"
         >
-          GitHub
-        </a>
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path
+            class="fill-current"
+            d="M22.17 9.17A7 7 0 1 0 14 16.06V20H6v-3h1v-4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v4h1v5h16v-2h-3v-3.88a7 7 0 0 0 6.17-6.95zM4.5 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+          />
+        </svg>
+        GreenRoutes
       </div>
+      <h1 class="block font-black leading-tight text-6xl pb-16">
+        Where would you like to explore?
+      </h1>
+      <form>
+        <label for="start" class="block pb-4">Starting point</label>
+        <input
+          id="start"
+          type="text"
+          name="start"
+          class="rounded rounded-r-none py-4 px-8 w-9/12 text-gray-800"
+          placeholder="Current location"
+        /><button
+          type="submit"
+          class="w-3/12 p-4 rounded rounded-l-none bg-secondary"
+        >
+          &rarr;
+        </button>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+// import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
-    Logo
+    // Logo
   }
 }
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  @apply bg-primary text-white w-full h-full m-0 p-0;
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  display: block;
-  font-weight: 900;
-  font-size: 100px;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+label[for='start']:before {
+  content: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2015%2014%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M14.26.49L.76%206.14v.73l5.13%201.99%201.98%205.13h.74L14.26.49z%22%2F%3E%3C%2Fsvg%3E');
+  @apply inline-block w-6 h-6 mr-4;
 }
 </style>
