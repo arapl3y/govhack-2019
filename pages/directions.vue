@@ -16,9 +16,9 @@ export default {
 
     const map = new mapboxgl.Map({
       container: 'mapbox',
-      style: 'mapbox://styles/arapl3y/ck09ai7db1r051dpjm7gga6x2', // style URL
+      style: 'mapbox://styles/arapl3y/ck0a824j32m8j1cmwf3pgaqv8', // style URL
       center: [151.20075, -33.88137], // starting position as [lng, lat]
-      zoom: 15
+      zoom: 13
     })
 
     const geolocation = new mapboxgl.GeolocateControl({
