@@ -1,17 +1,48 @@
 <template>
   <div>
     <div id="mapbox" />
-    <div class="info-box flex flex-row">
-      <span class="w-1/3 flex items-center justify-center">
-        {{ localTemp }} &deg;C
-      </span>
 
-      <span class="w-1/3 flex items-center justify-center"
-        >{{ distance }}km</span
+    <div
+      v-if="showHeader"
+      class="h-28 w-full absolute top-0 left-0 info-box flex flex-row font-body shadow-xl"
+    >
+      <span
+        class="bg-primary w-1/3 flex flex-col items-center justify-center py-4 text-white"
       >
-      <span class="w-1/3 flex items-center justify-center"
-        >{{ duration }} minutes</span
+        <img src="/thermometer.svg" />
+        <span>{{ localTemp }} &deg;C</span>
+      </span>
+      <span
+        class="bg-gray-400 w-1/3 flex flex-col items-center justify-center py-4"
       >
+        <img src="/walking.svg" />
+        <span>{{ distance }}km</span>
+      </span>
+      <span
+        class="bg-gray-300 w-1/3 flex flex-col items-center justify-center py-4"
+      >
+        <img src="/stopwatch.svg" />
+        <span>{{ duration }} mins</span>
+      </span>
+    </div>
+    <div
+      class="absolute bottom-0 w-full justify-center items-center flex flex-row"
+    >
+      <button
+        v-if="!showControls"
+        class="w-1/2 p-4 rounded rounded-l-none bg-primary mb-12 text-white font-black shadow-2xl"
+        @click="showControls = true"
+      >
+        Plan your route
+      </button>
+
+      <button
+        v-if="showCompleted"
+        class="w-1/2 p-4 rounded rounded-l-none bg-primary mb-12 text-white font-black shadow-2xl"
+        @click="$router.push('/summary')"
+      >
+        View summary
+      </button>
     </div>
   </div>
 </template>
@@ -26,18 +57,35 @@ export default {
     draw: null,
     map: null,
     showHeader: false,
+    showCompleted: false,
+    showControls: false,
     localTemp: null,
     distance: null,
-    duration: null
+    duration: null,
+    carbonSaved: null,
+    geolocation: null,
+    navigationControl: null
   }),
+  watch: {
+    showControls(val) {
+      if (val) {
+        this.map.addControl(this.draw, 'bottom-right')
+        this.map.addControl(this.geolocation, 'bottom-right')
+        this.map.addControl(this.navigationControl, 'bottom-right')
+      }
+    }
+  },
   mounted() {
+    const lat = this.$route.query.lat
+    const lng = this.$route.query.lng
+
     mapboxgl.accessToken =
       'pk.eyJ1IjoiYXJhcGwzeSIsImEiOiJjazA4eThjdnkwMzNuM21wYm5rbnhoNTZoIn0.4-8tR6ZMNfGDyoQhjKwHpQ'
 
     this.map = new mapboxgl.Map({
       container: 'mapbox',
       style: 'mapbox://styles/arapl3y/ck0a824j32m8j1cmwf3pgaqv8', // style URL
-      center: [151.20075, -33.88137], // starting position as [lng, lat]
+      center: [lng || 151.20075, lat || -33.88137], // starting position as [lng, lat]
       zoom: 14,
       minZoom: 11
     })
@@ -102,14 +150,14 @@ export default {
       ]
     })
 
-    const geolocation = new mapboxgl.GeolocateControl({
+    this.geolocation = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
       },
       trackUserLocation: true
     })
 
-    const navigationControl = new mapboxgl.NavigationControl()
+    this.navigationControl = new mapboxgl.NavigationControl()
 
     // geolocation.on('geolocate', async (e) => {
     //   const lon = e.coords.longitude
@@ -128,9 +176,6 @@ export default {
     //   }
     // })
 
-    this.map.addControl(this.draw, 'bottom-right')
-    this.map.addControl(geolocation, 'bottom-right')
-    this.map.addControl(navigationControl, 'bottom-right')
     // this.map.addControl(directions, 'top-left')
 
     this.map.on('draw.create', this.updateRoute)
@@ -145,7 +190,7 @@ export default {
         )
         const data = await req.json()
 
-        this.localTemp = data.main.temp
+        this.localTemp = data.main.temp.toFixed(1)
       } catch (err) {
         throw new Error(err)
       }
@@ -158,7 +203,9 @@ export default {
       const newCoords = coords.join(';')
       this.showHeader = true
 
-      this.getLocalTemperature(newCoords[0], newCoords[1])
+      const [lon, lat] = coords[0]
+
+      this.getLocalTemperature(lat, lon)
 
       this.getMatch(newCoords)
     },
@@ -177,7 +224,7 @@ export default {
         const duration = data.routes[0].duration / 60 // convert to minutes
 
         this.distance = distance.toFixed(2)
-        this.duration = duration.toFixed(2)
+        this.duration = Math.round(duration)
         this.carbonSaved = (distance * 180).toFixed(2)
 
         const coords = data.routes[0].geometry
@@ -224,6 +271,8 @@ export default {
         this.localTemp = null
         this.distance = null
         this.duration = null
+
+        this.showCompleted = true
       } else {
       }
     }
@@ -235,19 +284,5 @@ export default {
 #mapbox {
   width: 100vw;
   height: 100vh;
-}
-
-.info-box {
-  height: 6rem;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
-  text-align: left;
-  font-family: 'Arial';
-  margin: 0;
-  font-size: 1rem;
 }
 </style>
