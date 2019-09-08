@@ -24,6 +24,11 @@ export default {
         rel: 'stylesheet',
         href:
           'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css'
       }
     ]
   },
